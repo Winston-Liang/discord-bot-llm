@@ -1,9 +1,9 @@
-const { REST, Routes } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
+import { REST, Routes } from "discord.js";
+import fs from "fs";
+import path from "path";
 
-const BOT_TOKEN = process.env.DISCORD_LLAMA2_BOT_TOKEN; 
-const CLIENT_ID = process.env.DISCORD_LLAMA2_BOT_CLIENT_ID
+const BOT_TOKEN = process.env.DISCORD_LLM_BOT_TOKEN; 
+const CLIENT_ID = process.env.DISCORD_LLM_BOT_CLIENT_ID;
 
 const deploy = async () => {
     const commands = [];
@@ -28,7 +28,7 @@ const deploy = async () => {
     }
     
     // Construct and prepare an instance of the REST module
-    const rest = new REST().setToken(BOT_TOKEN);
+    const rest = new REST().setToken(BOT_TOKEN ?? "");
     
     // and deploy your commands!
     (async () => {
@@ -36,8 +36,8 @@ const deploy = async () => {
             console.log(`Started refreshing ${commands.length} application (/) commands.`);
     
             // The put method is used to fully refresh all commands in the guild with the current set
-            const data = await rest.put(
-                Routes.applicationCommands(CLIENT_ID),
+            const data: any = await rest.put(
+                Routes.applicationCommands(CLIENT_ID ?? ""),
                 { body: commands }
             );
     
@@ -51,4 +51,4 @@ const deploy = async () => {
 
 
 
-module.exports = deploy;
+export default deploy;
